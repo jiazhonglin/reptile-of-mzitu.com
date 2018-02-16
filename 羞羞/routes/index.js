@@ -32,7 +32,7 @@ router.get('/:num', function (req, res, next) {
         childNums.push(i)
       }
       console.log(childNums)
-      mkdirp(dir + '/' + num, function (err) {
+      mkdirp(dir + '/' + dirName, function (err) {
         if (err) {
           console.log(err);
         }
@@ -48,17 +48,17 @@ router.get('/:num', function (req, res, next) {
               console.log('图片链接' + url)
               var filename = childNum + '.jpg'
               var options = {
-                 url: url,
+                url: url,
                 encoding: 'binary',
-                 headers: {
-                 'User-Agent': 'request',
-                'Referer':'http://www.mzitu.com/' + num
+                headers: {
+                  'User-Agent': 'request',
+                  'Referer': 'http://www.mzitu.com/' + num
                 }
-                };
+              };
               request(options, function (error, response, body) {
                 if (!error && response.statusCode == 200) {
                   if (!body) console.log("(╥╯^╰╥)哎呀没有内容。。。")
-                  fs.writeFile(dir + '/' + num + '/' + filename, body, 'binary', function (err) {
+                  fs.writeFile(dir + '/' + dirName + '/' + filename, body, 'binary', function (err) {
                     if (err) { console.log(err); }
                     console.log('o(*￣▽￣*)o偷偷下载' + dir + '/' + filename + ' done');
                     cb(null, null)
@@ -68,7 +68,7 @@ router.get('/:num', function (req, res, next) {
             })
         }, function (err) {
           console.log(err)
-          console.log('爬完了')
+          res.send('爬完了')
         })
       });
     })
